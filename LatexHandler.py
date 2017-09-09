@@ -1,11 +1,19 @@
 import os
 from html.parser import HTMLParser
-
+from templates import write_header, write_footer
 
 class LatexHandler:
 
     def __init__(self, book_dir):
         self.book_dir = book_dir
+
+        self.out_file = None
+
+        self.temp_data = None
+        self.in_title = False
+
+        self.skip_tags = ["p", "h1", "a"]
+        self.title_tags = ["h2", "strong"]
 
     def make_book(self, title):
         print(title)
@@ -14,10 +22,19 @@ class LatexHandler:
         files = os.listdir(self.book_dir)
         files = [f for f in files if f.endswith(".html")]
 
-        for f in sorted(files):
+        main_filename = os.path.join(self.book_dir, "main.tex")
+        with open(main_filename, 'w') as f:
+            write_header(f)
 
-            blog_name = f.split("-")[0]
-            self.make_blog_file(blog_name, f)
+            for fil in sorted(files):
+
+                blog_name = fil.split("-")[0]
+                blog_file = self.make_blog_file(blog_name, fil)
+                f.write(r"\input{" + blog_file + "}\n")
+
+        with open(main_filename, 'a') as f:
+            write_footer(f)
+
 
 
     def make_blog_file(self, blog_name, html_filename):
@@ -29,20 +46,51 @@ class LatexHandler:
 
             with open(tex_filename, 'w') as g:
 
+                self.out_file = g
+
                 parser = Parser(self.handle_starttag, self.handle_endtag, self.handle_data)
 
                 parser.feed(f.readline())
 
-                #g.write(blog_name)
+        return blog_name
+
+
+
+    def write_text(self, text):
+        self.out_file.write(text)
 
     def handle_starttag(self, tag, attrs):
-        print("Encountered a start tag:", tag)
+        if tag in self.skip_tags:
+            return
+
+        if tag in self.title_tags:
+            self.in_title = True
+
+        print("Encountered a start tag:", tag, str(attrs))
+
+        #if tag == "h1":
+
 
     def handle_endtag(self, tag):
+        if tag in self.skip_tags:
+            return
+
         print("Encountered an end tag :", tag)
+
+        if tag in self.title_tags:
+
+            print("Out: " + self.temp_data)
+            self.in_title = False
+
 
     def handle_data(self, data):
         print("Encountered some data  :", data)
+        self.temp_data = data
+
+        if not self.in_title:
+
+            #print("Out: " + self.temp_data)
+            self.write_text(self.temp_data + "\n")
 
 
 
