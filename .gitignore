@@ -1,3 +1,11 @@
+
+#ignore the content files
+*.zip
+*.png
+*.ods
+*.jpg
+*/*.html
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
