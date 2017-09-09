@@ -1,4 +1,4 @@
-def write_header(outfile):
+def write_header(outfile, title, author):
     outfile.write(r"""
 \documentclass[12pt,a4paper]{book}
 \usepackage[noenc]{tipa}
@@ -47,12 +47,17 @@ def write_header(outfile):
 \let\oldendcenter\endcenter
 \renewenvironment{center}{\setlength\topsep{0pt}\oldcenter}{\oldendcenter}
 
-\title{Title}
-\author{Author}
+\title{""")
+    outfile.write(title)
+    outfile.write(r"""}
+\author{""")
+    outfile.write(author)
+    outfile.write(r"""}
 \date{}
 \begin{document}
 \maketitle
 """)
+
 def write_footer(outfile):
     outfile.write(r"""
 \end{document}""")

@@ -7,6 +7,9 @@ class LatexHandler:
     def __init__(self, book_dir):
         self.book_dir = book_dir
 
+        self.book_title = None
+        self.book_author = None
+
         self.out_file = None
 
         self.temp_data = None
@@ -15,16 +18,16 @@ class LatexHandler:
         self.skip_tags = ["p", "h1", "a"]
         self.title_tags = ["h2", "strong"]
 
-    def make_book(self, title):
-        print(title)
-        print(self.book_dir)
+    def make_book(self, title, author):
+        self.book_title = title
+        self.book_author = author
 
         files = os.listdir(self.book_dir)
         files = [f for f in files if f.endswith(".html")]
 
         main_filename = os.path.join(self.book_dir, "main.tex")
         with open(main_filename, 'w') as f:
-            write_header(f)
+            write_header(f, self.book_title, self.book_author)
 
             for fil in sorted(files):
 
