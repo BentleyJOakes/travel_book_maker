@@ -7,6 +7,6 @@ Usage:
 
 From Google Drive, download the documents as HTML zipped.
 
-Place the zip files in the blog_zips directory
+Place the zip files in the blog_zips directory. The script will use the zip creation date to determine the order of the documents.
 
 Run 'python make_travel_book.py'
