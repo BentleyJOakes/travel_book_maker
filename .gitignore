@@ -1,9 +1,11 @@
 
 #ignore the content files
 *.zip
+*.docx
 *.png
 *.ods
 *.jpg
+*.jpeg
 */*.html
 
 # Byte-compiled / optimized / DLL files

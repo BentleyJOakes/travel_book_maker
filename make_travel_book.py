@@ -1,9 +1,12 @@
 
-from ZipHandler import ZipHandler
+from DOCXHandler import DOCXHandler
 
-zip_dir = "./blog_zips"
 book_dir = "./travel_book"
+docx_dir = "./blog_docx"
 
-zh = ZipHandler(zip_dir)
-zh.unzip(book_dir)
+dh = DOCXHandler(docx_dir)
+
+dh.extract(book_dir)
+
+
 
