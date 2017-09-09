@@ -70,10 +70,10 @@ def write_image(outfile, image_file):
 \begin{figure*}[h!]
     \centering
     \begin{subfigure}[t]{1.00\textwidth}
-        \centering\includegraphics[width=\linewidth]{""")
+        \includegraphics[width=\linewidth]{""")
     outfile.write(image_file)
     outfile.write(r"""}
-        %\caption{}
     \end{subfigure}
+    %\caption*{}
 \end{figure*}
 """)
