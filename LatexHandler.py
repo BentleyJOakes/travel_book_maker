@@ -60,7 +60,14 @@ class LatexHandler:
 
 
     def write_text(self, text):
-        self.out_file.write(text)
+        self.out_file.write(text + "\n")
+
+    def write_title(self, title):
+        title = title.strip()
+        if not title:
+            return
+
+        self.out_file.write(r"\section*{" + title + "}\n")
 
     def handle_starttag(self, tag, attrs):
         if tag in self.skip_tags:
@@ -71,7 +78,7 @@ class LatexHandler:
 
         print("Encountered a start tag:", tag, str(attrs))
 
-        #if tag == "h1":
+        #if tag == "img":
 
 
     def handle_endtag(self, tag):
@@ -82,8 +89,14 @@ class LatexHandler:
 
         if tag in self.title_tags:
 
-            print("Out: " + self.temp_data)
+            #print("Out: " + self.temp_data)
+
+            if tag != "h1":
+                self.write_title(self.temp_data)
             self.in_title = False
+
+        if tag == "img":
+            self.temp_data = " "
 
 
     def handle_data(self, data):
