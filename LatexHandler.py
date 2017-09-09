@@ -1,6 +1,6 @@
 import os
 from html.parser import HTMLParser
-from templates import write_header, write_footer
+from templates import write_header, write_footer, write_image
 
 class LatexHandler:
 
@@ -26,17 +26,17 @@ class LatexHandler:
         files = [f for f in files if f.endswith(".html")]
 
         main_filename = os.path.join(self.book_dir, "main.tex")
-        with open(main_filename, 'w') as f:
-            write_header(f, self.book_title, self.book_author)
+        with open(main_filename, 'w') as m:
+            write_header(m, self.book_title, self.book_author)
 
             for fil in sorted(files):
-
+                print("Fil: " + fil)
                 blog_name = fil.split("-")[0]
                 blog_file = self.make_blog_file(blog_name, fil)
-                f.write(r"\input{" + blog_file + "}\n")
+                m.write(r"\input{" + blog_file + "}\n")
 
-        with open(main_filename, 'a') as f:
-            write_footer(f)
+        with open(main_filename, 'a') as m:
+            write_footer(m)
 
 
 
@@ -57,10 +57,10 @@ class LatexHandler:
 
         return blog_name
 
-
+    # =====================
 
     def write_text(self, text):
-        self.out_file.write(text + "\n")
+        self.out_file.write(text.replace("&", "\&") + "\n")
 
     def write_title(self, title):
         title = title.strip()
@@ -69,6 +69,8 @@ class LatexHandler:
 
         self.out_file.write(r"\section*{" + title + "}\n")
 
+
+#=====================
     def handle_starttag(self, tag, attrs):
         if tag in self.skip_tags:
             return
@@ -78,8 +80,8 @@ class LatexHandler:
 
         print("Encountered a start tag:", tag, str(attrs))
 
-        #if tag == "img":
-
+        if tag == "img":
+            self.temp_data = attrs[0][1]
 
     def handle_endtag(self, tag):
         if tag in self.skip_tags:
@@ -96,6 +98,7 @@ class LatexHandler:
             self.in_title = False
 
         if tag == "img":
+            write_image(self.out_file, self.temp_data)
             self.temp_data = " "
 
 

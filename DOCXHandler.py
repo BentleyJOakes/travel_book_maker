@@ -23,9 +23,9 @@ class DOCXHandler:
         files = os.listdir(self.docx_dir)
 
         files = [os.path.join(self.docx_dir, f) for f in files if f.endswith(".docx")]
-        files.sort(key = lambda x: os.path.getctime(x))
-        files.reverse()
-        for i, docx_filename in enumerate(files):
+        #files.sort(key = lambda x: os.path.getmtime(x))
+        #files.reverse()
+        for i, docx_filename in enumerate(sorted(files)):
             print(docx_filename)
 
             self.image_dir = "blog" + str(i) + "_images"
@@ -39,7 +39,7 @@ class DOCXHandler:
                     html = result.value  # The generated HTML
                     messages = result.messages  # Any messages, such as warnings during conversion
                     if messages:
-                        raise Exception(messages)
+                        print("Parsing Message: " + str(messages))
 
                     html_file.write(html)
 

@@ -2,6 +2,7 @@
 #ignore the content files
 *.zip
 *.docx
+*.docx#
 *.png
 *.ods
 *.jpg

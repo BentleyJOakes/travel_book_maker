@@ -2,7 +2,9 @@ def write_header(outfile, title, author):
     outfile.write(r"""
 \documentclass[12pt,a4paper]{book}
 \usepackage[noenc]{tipa}
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{lmodern,textcomp}
+%\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -61,3 +63,17 @@ def write_header(outfile, title, author):
 def write_footer(outfile):
     outfile.write(r"""
 \end{document}""")
+
+def write_image(outfile, image_file):
+
+    outfile.write(r"""
+\begin{figure*}[h!]
+    \centering
+    \begin{subfigure}[t]{1.00\textwidth}
+        \centering\includegraphics[width=\linewidth]{""")
+    outfile.write(image_file)
+    outfile.write(r"""}
+        %\caption{}
+    \end{subfigure}
+\end{figure*}
+""")
