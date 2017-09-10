@@ -64,16 +64,3 @@ def write_footer(outfile):
     outfile.write(r"""
 \end{document}""")
 
-def write_image(outfile, image_file):
-
-    outfile.write(r"""
-\begin{figure*}[h!]
-    \centering
-    \begin{subfigure}[t]{1.00\textwidth}
-        \includegraphics[width=\linewidth]{""")
-    outfile.write(image_file)
-    outfile.write(r"""}
-    \end{subfigure}
-    %\caption*{}
-\end{figure*}
-""")

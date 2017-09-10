@@ -1,6 +1,7 @@
 import os
 from html.parser import HTMLParser
-from templates import write_header, write_footer, write_image
+from ImageHandler import ImageHandler
+from templates import write_header, write_footer
 
 class LatexHandler:
 
@@ -17,6 +18,8 @@ class LatexHandler:
 
         self.skip_tags = ["p", "h1", "a"]
         self.title_tags = ["h2", "strong"]
+
+        self.ih = ImageHandler()
 
     def make_book(self, title, author):
         self.book_title = title
@@ -50,6 +53,7 @@ class LatexHandler:
             with open(tex_filename, 'w') as g:
 
                 self.out_file = g
+                self.ih.outfile = self.out_file
 
                 parser = Parser(self.handle_starttag, self.handle_endtag, self.handle_data)
 
@@ -60,12 +64,20 @@ class LatexHandler:
     # =====================
 
     def write_text(self, text):
+        text = text.strip()
+        if not text:
+            return
+
+        self.ih.flush()
+
         self.out_file.write(text.replace("&", "\&") + "\n")
 
     def write_title(self, title):
         title = title.strip()
         if not title:
             return
+
+        self.ih.flush()
 
         self.out_file.write(r"\section*{" + title + "}\n")
 
@@ -98,7 +110,8 @@ class LatexHandler:
             self.in_title = False
 
         if tag == "img":
-            write_image(self.out_file, self.temp_data)
+
+            self.ih.add_image(self.temp_data)
             self.temp_data = " "
 
 
